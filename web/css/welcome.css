@@ -1,0 +1,26 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : May 21, 2021, 10:06:29 PM
+    Author     : songm
+*/
+
+.welcome 
+{
+    margin: 40px 0 40px 0;
+}
+
+.btn-center 
+{
+    display: flex;
+    justify-content: flex-end;
+}
+
+/*Moderated Classic Tag*/ 
+span 
+{
+    color: blue;
+}
