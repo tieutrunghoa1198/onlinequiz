@@ -15,7 +15,7 @@ public class Exam
 {
 
     private long timeForExam;
-    private List<Question> questionList;
+    private List<Quiz> questionList;
     private int currentIndex;
     private long endTime;
     private boolean finish;
@@ -74,19 +74,19 @@ public class Exam
     {
     }
 
-    public Exam(int time, double score, List<Question> questionList, Question currentQuestion)
+    public Exam(int time, double score, List<Quiz> questionList, Question currentQuestion)
     {
         this.timeForExam = time;
         this.questionList = questionList;
         this.finish = false;
     }
 
-    public List<Question> getQuestionList()
+    public List<Quiz> getQuestionList()
     {
         return questionList;
     }
 
-    public void setQuestionList(List<Question> questionList)
+    public void setQuestionList(List<Quiz> questionList)
     {
         this.questionList = questionList;
     }

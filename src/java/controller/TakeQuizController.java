@@ -8,6 +8,7 @@ package controller;
 import dao.QuestionDAO;
 import entity.Exam;
 import entity.Question;
+import entity.Quiz;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -65,7 +66,7 @@ public class TakeQuizController extends BaseAuthen
 
             //create connection to database
             
-            List<Question> qList = db.createExam(numberOfQuiz);
+            List<Quiz> qList = db.getListQuiz(numberOfQuiz);
             long timeForExam = numberOfQuiz * 60 * 1000;
             long currentTime = System.currentTimeMillis();
             //create exam for taker

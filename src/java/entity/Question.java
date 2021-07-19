@@ -20,7 +20,7 @@ public final class Question
     private String correctAns;
     private User owner;
     private Date createdDate;
-
+    
     public Question(String question, String ans_1, String ans_2, String ans_3, String ans_4, String correctAns, Date createdDate, User owner)
     {
         setQuestion(question);

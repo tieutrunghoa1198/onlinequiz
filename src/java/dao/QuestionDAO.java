@@ -6,7 +6,9 @@
 package dao;
 
 import context.BaseDAO;
+import entity.Answer;
 import entity.Question;
+import entity.Quiz;
 import entity.User;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -68,6 +70,98 @@ public class QuestionDAO extends BaseDAO
         return -1;
     }
 
+    public int getTotalCorrectAnsByQuizID(int qid)
+    {
+        try
+        {
+            String sql = "SELECT COUNT(isTrue) AS correctAns FROM dbo.QuizBank\n"
+                    + "INNER JOIN dbo.Answer ON Answer.qid = QuizBank.qid\n"
+                    + "WHERE dbo.QuizBank.qid = ? AND isTrue = 1";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, qid);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next())
+            {
+                return rs.getInt("correctAns");
+            }
+        } catch (SQLException e)
+        {
+            System.out.println(e);
+        }
+        return -1;
+    }
+
+    public int createQuiz(String question, int userid)
+    {
+        try
+        {
+            String sql = "INSERT INTO dbo.QuizBank\n"
+                    + "(\n"
+                    + "    question,\n"
+                    + "    createdAt,\n"
+                    + "    userid\n"
+                    + ")\n"
+                    + "VALUES\n"
+                    + "(   ?,       -- question - nvarchar(max)\n"
+                    + "    GETDATE(), -- createdAt - date\n"
+                    + "    ?          -- userid - int\n"
+                    + "    )";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setNString(1, question);
+            stm.setInt(2, userid);
+            return stm.executeUpdate();
+        } catch (SQLException e)
+        {
+            System.out.println(e);
+        }
+        return -1;
+    }
+
+    public int getInsertedRow()
+    {
+        try
+        {
+            String sql2 = "SELECT TOP(1) qid FROM dbo.QuizBank ORDER BY qid DESC";
+            PreparedStatement stm2 = connection.prepareStatement(sql2);
+            ResultSet rs = stm2.executeQuery();
+            if (rs.next())
+            {
+                return rs.getInt("qid");
+            }
+        } catch (SQLException e)
+        {
+            System.out.println(e);
+        }
+        return -1;
+    }
+
+    public int insertAnswer(int qid, Answer a)
+    {
+        try
+        {
+            String sql = "INSERT dbo.Answer\n"
+                    + "(\n"
+                    + "    qid,\n"
+                    + "    answer,\n"
+                    + "    isTrue\n"
+                    + ")\n"
+                    + "VALUES\n"
+                    + "(   ?,   -- qid - int\n"
+                    + "    ?, -- answer - nvarchar(max)\n"
+                    + "    ? -- isTrue - bit\n"
+                    + "    )";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, qid);
+            stm.setNString(2, a.getAnswer());
+            stm.setBoolean(3, a.isSelected());
+            return stm.executeUpdate();
+        } catch (SQLException e)
+        {
+            System.out.println(e);
+        }
+        return -1;
+    }
+
     public List<Question> getQuestionByUser(User user)
     {
         List<Question> qList = new ArrayList<>();
@@ -97,6 +191,89 @@ public class QuestionDAO extends BaseDAO
             System.out.println(e);
         }
         return qList;
+    }
+
+    public List<Quiz> getListQuiz(int numberOfQuiz)
+    {
+        List<Quiz> listQuiz = new ArrayList<>();
+        try
+        {
+            String sql = "SELECT TOP(?) * FROM dbo.QuizBank \n"
+                    + "ORDER BY NEWID()";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, numberOfQuiz);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next())
+            {
+                int quizID = rs.getInt("qid");
+                Quiz q = new Quiz(
+                        quizID,
+                        rs.getString("question"),
+                        getAnswerByQuizID(quizID)
+                );
+                System.out.println(getAnswerByQuizID(quizID));
+                listQuiz.add(q);
+            }
+        } catch (SQLException e)
+        {
+            System.out.println(e);
+        }
+        return listQuiz;
+    }
+
+    public List<Answer> getAnswerByQuizID(int qid)
+    {
+        List<Answer> listAnswers = new ArrayList<>();
+        try
+        {
+            String sql = "SELECT aid, question, answer FROM dbo.QuizBank\n"
+                    + "INNER JOIN dbo.Answer ON Answer.qid = QuizBank.qid\n"
+                    + "WHERE dbo.QuizBank.qid = ?\n"
+                    + "ORDER BY NEWID()";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, qid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next())
+            {
+                Answer a = new Answer(
+                        rs.getInt("aid"),
+                        rs.getString("answer")
+                );
+                listAnswers.add(a);
+            }
+        } catch (SQLException e)
+        {
+            System.out.println(e);
+        }
+        return listAnswers;
+    }
+
+    public List<Answer> getCorrectAnswerByQuizID(int qid)
+    {
+        List<Answer> listAnswers = new ArrayList<>();
+        try
+        {
+            String sql = "SELECT aid, question, answer, isTrue FROM dbo.QuizBank\n"
+                    + "INNER JOIN dbo.Answer ON Answer.qid = QuizBank.qid\n"
+                    + "WHERE dbo.QuizBank.qid = ?\n"
+                    + "ORDER BY NEWID()";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, qid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next())
+            {
+                Answer a = new Answer(
+                        rs.getInt("aid"),
+                        rs.getString("answer"),
+                        rs.getBoolean("isTrue")
+                );
+                listAnswers.add(a);
+            }
+        } catch (SQLException e)
+        {
+            System.out.println(e);
+        }
+        return listAnswers;
     }
 
     public List<Question> createExam(int numberOfQuestion)
@@ -134,7 +311,7 @@ public class QuestionDAO extends BaseDAO
     {
         try
         {
-            String sql = "SELECT COUNT(*) AS bankquest FROM dbo.QUESTION";
+            String sql = "SELECT COUNT(*) AS bankquest FROM dbo.QuizBank";
             PreparedStatement stm = connection.prepareCall(sql);
             ResultSet rs = stm.executeQuery();
             if (rs.next())

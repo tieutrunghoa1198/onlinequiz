@@ -36,29 +36,22 @@
                             <c:set var="quest" value="${exam.questionList.get(exam.currentIndex)}"/>
                             <p>${quest.question}</p>
                             <br>
-                            <div class="row">
-                                <input type="checkbox" id="option_1" onclick="isChecked(this)" name="answer_1" value="1">    
-                                <label for="option_1"> ${quest.ans_1} </label>
-                            </div>
+                            <c:set var="id" value="0"/>
+                            <c:forEach items="${quest.getListAnswers()}" var="a">
+                                <div class="row">
+                                    <input type="checkbox" id="option_${a.aid}" onclick="isChecked(this)" name="answer" value="${a.aid}" 
+                                           <c:if test="${a.selected}">
+                                               checked
+                                           </c:if>
+                                    >    
+                                    <label for="option_${a.aid}"> ${a.answer} </label>
+                                </div>
+                            </c:forEach>
 
-                            <div class="row">
-                                <input type="checkbox" id="option_2" onclick="isChecked(this)" name="answer_2" value="2">
-                                <label for="option_2"> ${quest.ans_2} </label>
-                            </div>
-
-                            <div class="row">
-                                <input type="checkbox" id="option_3" onclick="isChecked(this)" name="answer_3" value="3">
-                                <label for="option_3"> ${quest.ans_3} </label>
-                            </div>
-
-                            <div class="row">
-                                <input type="checkbox" id="option_4" onclick="isChecked(this)" name="answer_4" value="4">    
-                                <label for="option_4"> ${quest.ans_4} </label>
-                            </div>
                         </div>
-                            <input class="" type="submit" name="cmd" value="Submit">
-                            <input class="" type="submit" name="cmd" value="Next">
-                            <input class="" type="submit" name="cmd" value="Prev">
+                        <input class="" type="submit" name="cmd" value="Submit">
+                        <input class="" type="submit" name="cmd" value="Next">
+                        <input class="" type="submit" name="cmd" value="Prev">
                     </form>
                 </div>
             </div>

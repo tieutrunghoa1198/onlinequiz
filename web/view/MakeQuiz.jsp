@@ -25,7 +25,7 @@
                                 Question: 
                             </div>
                             <div class="data-input">
-                                <textarea class="medium-textarea" id="w3review" name="question"></textarea>
+                                <textarea class="medium-textarea" id="w3review" name="question" required="true"></textarea>
                             </div>
                         </div>
                         <div class="lif">
@@ -33,7 +33,8 @@
                                 Option 1:
                             </div>
                             <div class="data-input">
-                                <textarea id="ans_1" name="option_1"></textarea>
+                                <textarea id="ans_1" name="option"></textarea>
+                                <input type="hidden" name="textareaid" value="1">
                             </div>
                         </div>
 
@@ -42,7 +43,8 @@
                                 Option 2:
                             </div>
                             <div class="data-input">
-                                <textarea id="ans_2" name="option_2"></textarea>
+                                <textarea id="ans_2" name="option"></textarea>
+                                <input type="hidden" name="textareaid" value="2">
                             </div>
                         </div>
 
@@ -51,7 +53,8 @@
                                 Option 3:
                             </div>
                             <div class="data-input">
-                                <textarea id="ans_3" name="option_3"></textarea>
+                                <textarea id="ans_3" name="option"></textarea>
+                                <input type="hidden" name="textareaid" value="3">
                             </div>
                         </div>
 
@@ -60,7 +63,8 @@
                                 Option 4:
                             </div>
                             <div class="data-input">
-                                <textarea id="ans_4" name="option_4"></textarea>
+                                <textarea id="ans_4" name="option"></textarea>
+                                <input type="hidden" name="textareaid" value="4">
                             </div>
                         </div>
 
@@ -69,13 +73,13 @@
                                 Answer(s): 
                             </div>
                             <div class="data-input">
-                                <input type="checkbox" id="option_1" onclick="isChecked(this)" name="answer" value="1">
+                                <input type="checkbox" id="option_1" name="answer" value="1" disabled="true">
                                 <label for="option_1"> Option 1 </label>
-                                <input type="checkbox" id="option_2" onclick="isChecked(this)" name="answer" value="2">
+                                <input type="checkbox" id="option_2" name="answer" value="2" disabled="true">
                                 <label for="option_2"> Option 2 </label>
-                                <input type="checkbox" id="option_3" onclick="isChecked(this)" name="answer" value="3">
+                                <input type="checkbox" id="option_3" name="answer" value="3" disabled="true">
                                 <label for="option_3"> Option 3 </label>
-                                <input type="checkbox" id="option_4" onclick="isChecked(this)" name="answer" value="4">
+                                <input type="checkbox" id="option_4" name="answer" value="4" disabled="true">
                                 <label for="option_4"> Option 4 </label>
                             </div>
                         </div>
@@ -94,20 +98,6 @@
         </div>
         <script src="../Quiz/js/main.js"></script>
         <script>
-            function validateForm()
-            {
-                var a = document.forms["form"]["ans_1"].value;
-                var b = document.forms["form"]["ans_2"].value;
-                var c = document.forms["form"]["ans_3"].value;
-                var d = document.forms["form"]["ans_4"].value;
-
-                if (a === null || a === "", b === null || b === "", c === null || c === "", d === null || d === "")
-                {
-                    alert("Please Fill In All Required Fields");
-                    console.log("check validate " + a);
-                    return false;
-                }
-            }
         </script>
     </body>
 </html>

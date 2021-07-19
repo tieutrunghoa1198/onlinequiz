@@ -151,6 +151,10 @@ h2
     margin-top: 50px;
 }
 
+.hidden
+{
+    display: none;
+}
 /*FLEX DIRECTION*/
 .row
 {
